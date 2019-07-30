@@ -15,31 +15,34 @@
       </block>
     </swiper>
     <div class="order-div">
-      <div class="order-button"><span>自助点单</span></div>
+      <button class="order-button" v-if="!isShow" open-type='getUserInfo' @getuserinfo="bindGetUserInfo"><span>自助点单</span></button>
     </div>
     <ul class="limited-time">
       <li>
         <div class="div-inner">
-          <div style="flex-grow: 1"><img style="width:60rpx; height: 60rpx;padding-top: 20rpx" src="/static/images/xianshi1.png"></div>
-          <span style="flex-grow: 10">限时拼团</span>
-          <div style="flex-grow: 1"><img style="width:60rpx; height: 60rpx;padding-top: 20rpx" src="/static/images/xianshi1.png"></div>
+          <div><img class="img-item" src="/static/images/xianshi.png"></div>
+          <span>限时拼团</span>
+          <div><img class="img-item img-right" src="/static/images/right.png"></div>
         </div>
       </li>
-            <li>
+      <li>
         <div class="div-inner">
-          <div style="flex-grow: 1"><img style="width:60rpx; height: 60rpx;padding-top: 20rpx" src="/static/images/xianshi1.png"></div>
-          <span style="flex-grow: 10">限时拼团</span>
-          <div style="flex-grow: 1"><img style="width:60rpx; height: 60rpx;padding-top: 20rpx" src="/static/images/xianshi1.png"></div>
+          <div><img class="img-item" src="/static/images/movie.png"></div>
+          <span>都可影院</span>
+          <div><img class="img-item img-right" src="/static/images/right.png"></div>
         </div>
       </li>
-            <li>
+      <li>
         <div class="div-inner">
-          <div style="flex-grow: 1"><img style="width:60rpx; height: 60rpx;padding-top: 20rpx" src="/static/images/xianshi1.png"></div>
-          <span style="flex-grow: 10">限时拼团</span>
-          <div style="flex-grow: 1"><img style="width:60rpx; height: 60rpx;padding-top: 20rpx" src="/static/images/xianshi1.png"></div>
+          <div ><img class="img-item" src="/static/images/money.png"></div>
+          <span>CoCo钱包</span>
+          <div ><img class="img-item img-right" src="/static/images/right.png"></div>
         </div>
       </li>
     </ul>
+    <div class="buttom-img">
+      <img src="/static/images/bottom-img.png">
+    </div>
   </div>
 </template>
 
@@ -58,7 +61,41 @@ export default {
       duration: 1000
     }
   },
-  methods: {}
+  methods: {
+    bindGetUserInfo (e) {
+      if (e.mp.detail.userInfo) {
+        console.log('用户点击了授权')
+        this.getInfo()
+      } else {
+        console.log('取消授权')
+      }
+    },
+    getInfo () {
+      // 获取授权
+      wx.getSetting({
+        success: res => {
+          wx.hideLoading()
+          if (res.authSetting['scope.userInfo']) {
+            this.isShow = true
+            wx.getUserInfo({
+              success: data => {
+                console.log(data)
+                this.userInfo = data.userInfo
+                wx.navigateTo({
+                  url: '/pages/location/location'
+                })
+              },
+              faild: () => {
+                console.log('失败')
+              }
+            })
+          } else {
+            this.isShow = false
+          }
+        }
+      })
+    }
+  }
 }
 </script>
 
@@ -103,12 +140,37 @@ export default {
   }
   .limited-time li{
     width: 100%;
+    height: 100rpx;
     line-height: 100rpx;
   }
   .div-inner{
     width: 90%;
+    height: 100rpx;
     margin: 0 auto;
     display: flex;
     border-bottom: 1px solid #ddd;
+  }
+  .div-inner div{
+    flex-grow: 1;
+  }
+  .div-inner span{
+    flex-grow: 10;
+  }
+  .img-item{
+    width:60rpx;
+    height: 60rpx;
+    padding-top: 20rpx;
+  }
+  .buttom-img{
+    width: 100%;
+    height: 300rpx;
+  }
+  .buttom-img img{
+    width: 100%;
+    height: 100%;
+  }
+  .img-right{
+    width: 30rpx;
+    height: 30rpx;
   }
 </style>
