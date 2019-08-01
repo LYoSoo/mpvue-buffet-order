@@ -82,7 +82,7 @@ export default {
                 console.log(data)
                 this.userInfo = data.userInfo
                 wx.navigateTo({
-                  url: '/pages/location/location'
+                  url: '/pages/location/main'
                 })
               },
               faild: () => {

@@ -3,7 +3,7 @@
     "pages/index/main",
     "pages/order/main",
     "pages/userInfo/main",
-    "pages/location/location"
+    "pages/location/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -56,7 +56,7 @@
     },
     {
       "name": "定位",
-      "pagePath": "pages/location/location",
+      "pagePath": "pages/location/main",
       "icon": "static/tabs/home.png",
       "activeIcon": "static/tabs/home-active.png"
     }
